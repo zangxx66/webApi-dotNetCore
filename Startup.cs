@@ -10,6 +10,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using WebAPI.Models;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 namespace WebAPI {
     public class Startup {
@@ -25,6 +26,7 @@ namespace WebAPI {
             services.AddDbContext<Context> (options => options.UseSqlServer (Configuration.GetConnectionString ("Database")));
             services.AddSession();
             services.AddMvc ();
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -36,6 +38,7 @@ namespace WebAPI {
             }
             app.UseSession();
             app.UseStatusCodePages();
+            app.UseAuthentication();
             app.UseMvc ();
         }
     }

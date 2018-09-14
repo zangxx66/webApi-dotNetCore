@@ -10,18 +10,18 @@ using WebAPI.ViewModels;
 
 namespace webapi.Controllers
 {
-    [Route ("api/Category")]
-    public class CategoryController:Controller
+    [Route ("api/User")]
+    public class UserController:Controller
     {
         private readonly Context _dbContext;
-        public CategoryController (Context db) {
+        public UserController (Context db) {
             _dbContext = db;
         }
 
         [HttpGet]
         public IActionResult Get (int Page, string QueryStr) {
-            var list = this._dbContext.Category.OrderByDescending (x => x.Sort).Skip (10 * (Page - 1)).Take (10).AsQueryable ();
-            if (!string.IsNullOrEmpty (QueryStr)) { list = list.Where (x => x.Name.Contains (QueryStr)); }
+            var list = this._dbContext.User.OrderByDescending (x => x.Id).Skip (10 * (Page - 1)).Take (10).AsQueryable ();
+            if (!string.IsNullOrEmpty (QueryStr)) { list = list.Where (x => x.UserName.Contains (QueryStr)); }
             var result = JsonConvert.SerializeObject (list);
             return Ok (result);
         }
@@ -29,14 +29,22 @@ namespace webapi.Controllers
         [HttpPut ("Update")]
         public IActionResult Put (string jsonStr) {
             try {
-                var args = JsonConvert.DeserializeObject<Category> (jsonStr);
-                var category = this._dbContext.Category.Find (args.Id);
-                if (category == null) {
+                var args = JsonConvert.DeserializeObject<User> (jsonStr);
+                var user = this._dbContext.User.Find (args.Id);
+                if (user == null) {
                     return NotFound ();
                 }
-                category.Name = args.Name;
-                category.Sort = args.Sort;
-                this._dbContext.Entry (category).CurrentValues.SetValues (category);
+                user.UserName = args.UserName;
+                user.NickName = args.NickName;
+                user.Password = args.Password;
+                user.Description = args.Description;
+                user.Email = args.Email;
+                user.Git = args.Git;
+                user.Twitter = args.Twitter;
+                user.Weibo = args.Weibo;
+                user.QQ = args.QQ;
+                user.Sex = args.Sex;
+                this._dbContext.Entry (user).CurrentValues.SetValues (user);
                 this._dbContext.SaveChanges ();
                 return NoContent ();
             } catch (Exception ex) {
@@ -52,11 +60,21 @@ namespace webapi.Controllers
         [HttpPost ("Add")]
         public IActionResult Post (string jsonStr) {
             try {
-                var args = JsonConvert.DeserializeObject<Category> (jsonStr);
-                var category = new Category ();
-                category.Name = args.Name;
-                category.Sort = args.Sort;
-                this._dbContext.Category.Add (category);
+                var args = JsonConvert.DeserializeObject<User> (jsonStr);
+                var user = new User ();
+                user.UserName = args.UserName;
+                user.NickName = args.NickName;
+                user.Password = args.Password;
+                user.Description = args.Description;
+                user.Email = args.Email;
+                user.Git = args.Git;
+                user.Twitter = args.Twitter;
+                user.Weibo = args.Weibo;
+                user.QQ = args.QQ;
+                user.Sex = args.Sex;
+                user.Role = args.Role;
+                user.RegDate = user.LastDate = new DateTime().Date;
+                this._dbContext.User.Add (user);
                 this._dbContext.SaveChanges ();
                 return Ok ();
             } catch (Exception ex) {
@@ -72,13 +90,13 @@ namespace webapi.Controllers
         [HttpDelete ("Del")]
         public IActionResult Delete (string jsonStr) {
             try {
-                var args = JsonConvert.DeserializeObject<Category> (jsonStr);
+                var args = JsonConvert.DeserializeObject<User> (jsonStr);
                 var id = args.Id;
-                var category = this._dbContext.Category.Find (id);
-                if (category == null) {
+                var user = this._dbContext.User.Find (id);
+                if (user == null) {
                     return NotFound ();
                 }
-                this._dbContext.Category.Remove (category);
+                this._dbContext.User.Remove (user);
                 this._dbContext.SaveChanges ();
                 return NoContent ();
             } catch (Exception ex) {

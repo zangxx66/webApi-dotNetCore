@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using WebAPI.Models;
 using WebAPI.ViewModels;
+using webapi.Helper;
 
 namespace WebAPI.Controllers {
     [Route ("api/Article")]
@@ -58,10 +59,10 @@ namespace WebAPI.Controllers {
                 var args = JsonConvert.DeserializeObject<ArticleVM> (jsonStr);
                 var categoryId = Guid.Parse (args.Category);
                 var category = this._dbContext.Category.Find (categoryId);
-                var session = HttpContext.Session.GetString ("usrInfo");
                 var usr = new User ();
-                if (!string.IsNullOrEmpty (session)) {
-                    var usrId = JsonConvert.DeserializeObject<User> (session).Id;
+                if (HttpContext.User.Identity.IsAuthenticated) {
+                    var uidStr = HttpContext.User.Claims.First().Value;
+                    var usrId = Guid.Parse(uidStr);
                     usr = this._dbContext.User.Find (usrId);
                 } else {
                     return NotFound ();
