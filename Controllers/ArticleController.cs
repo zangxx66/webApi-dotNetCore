@@ -9,7 +9,7 @@ using WebAPI.Models;
 using WebAPI.ViewModels;
 
 namespace WebAPI.Controllers {
-    [Route ("api/Article")]
+    [Route ("api/[controller]")]
     public class ArticleController : Controller {
         private readonly Context _dbContext;
         public ArticleController (Context db) {
@@ -17,11 +17,21 @@ namespace WebAPI.Controllers {
         }
 
         [HttpGet]
-        public IActionResult Get (int Page, string QueryStr) {
+        public IActionResult Get (string QueryStr, int Page = 1) {
             var list = this._dbContext.Article.OrderByDescending (x => x.CreateDate).Skip (10 * (Page - 1)).Take (10).AsQueryable ();
             if (!string.IsNullOrEmpty (QueryStr)) { list = list.Where (x => x.Title.Contains (QueryStr)); }
-            var result = JsonConvert.SerializeObject (list);
-            return Ok (result);
+            // var result = JsonConvert.SerializeObject (list);
+            return Ok (list);
+        }
+
+        [HttpGet ("Detail")]
+        public IActionResult Get (string param) {
+            var id = Guid.Parse (param);
+            var acticle = this._dbContext.User.Find (id);
+            if (acticle == null) {
+                return NotFound ();
+            }
+            return Ok (acticle);
         }
 
         [HttpPut ("Update")]
@@ -87,10 +97,9 @@ namespace WebAPI.Controllers {
         }
 
         [HttpDelete ("Del")]
-        public IActionResult Delete (string jsonStr) {
+        public IActionResult Delete (string param) {
             try {
-                var args = JsonConvert.DeserializeObject<ArticleVM> (jsonStr);
-                var id = Guid.Parse (args.Id);
+                var id = Guid.Parse (param);
                 var article = this._dbContext.Article.Find (id);
                 if (article == null) {
                     return NotFound ();
