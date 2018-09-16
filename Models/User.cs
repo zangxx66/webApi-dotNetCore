@@ -19,5 +19,9 @@ namespace WebAPI.Models {
         public string LastIp { get; set; }
         public DateTime LastDate { get; set; }
         public int Role { get; set; }
+
+        public User(){
+            this.Id = Guid.NewGuid();
+        }
     }
 }
