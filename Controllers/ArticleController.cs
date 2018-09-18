@@ -2,12 +2,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using webapi.Helper;
 using WebAPI.Models;
 using WebAPI.ViewModels;
-using webapi.Helper;
 
 namespace WebAPI.Controllers {
     [Route ("api/Article")]
@@ -17,15 +18,26 @@ namespace WebAPI.Controllers {
             _dbContext = db;
         }
 
-        [HttpGet]
-        public IActionResult Get (int Page, string QueryStr) {
+        [HttpGet ("Get")]
+        public IActionResult Get (string QueryStr, int Page = 1) {
             var list = this._dbContext.Article.OrderByDescending (x => x.CreateDate).Skip (10 * (Page - 1)).Take (10).AsQueryable ();
             if (!string.IsNullOrEmpty (QueryStr)) { list = list.Where (x => x.Title.Contains (QueryStr)); }
-            var result = JsonConvert.SerializeObject (list);
-            return Ok (result);
+            var obj = new { data = list, total = list.Count (), current = Page };
+            return Ok (obj);
         }
 
-        [HttpPut ("Update")]
+        [HttpGet ("Detail")]
+        public IActionResult Detail (string param) {
+            var id = Guid.Parse (param);
+            var acticle = this._dbContext.User.Find (id);
+            if (acticle == null) {
+                return NotFound ();
+            }
+            return Ok (acticle);
+        }
+
+        [Authorize (Roles = "Admin")]
+        [HttpPut ("{jsonStr}")]
         public IActionResult Put (string jsonStr) {
             try {
                 var args = JsonConvert.DeserializeObject<ArticleVM> (jsonStr);
@@ -53,7 +65,8 @@ namespace WebAPI.Controllers {
 
         }
 
-        [HttpPost ("Add")]
+        [Authorize (Roles = "Admin")]
+        [HttpPost ("{jsonStr}")]
         public IActionResult Post (string jsonStr) {
             try {
                 var args = JsonConvert.DeserializeObject<ArticleVM> (jsonStr);
@@ -61,8 +74,8 @@ namespace WebAPI.Controllers {
                 var category = this._dbContext.Category.Find (categoryId);
                 var usr = new User ();
                 if (HttpContext.User.Identity.IsAuthenticated) {
-                    var uidStr = HttpContext.User.Claims.First().Value;
-                    var usrId = Guid.Parse(uidStr);
+                    var uidStr = HttpContext.User.Claims.First ().Value;
+                    var usrId = Guid.Parse (uidStr);
                     usr = this._dbContext.User.Find (usrId);
                 } else {
                     return NotFound ();
@@ -87,11 +100,11 @@ namespace WebAPI.Controllers {
             }
         }
 
-        [HttpDelete ("Del")]
-        public IActionResult Delete (string jsonStr) {
+        [Authorize (Roles = "Admin")]
+        [HttpDelete ("{param}")]
+        public IActionResult Delete (string param) {
             try {
-                var args = JsonConvert.DeserializeObject<ArticleVM> (jsonStr);
-                var id = Guid.Parse (args.Id);
+                var id = Guid.Parse (param);
                 var article = this._dbContext.Article.Find (id);
                 if (article == null) {
                     return NotFound ();

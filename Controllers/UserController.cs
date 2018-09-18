@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
@@ -11,6 +12,7 @@ using WebAPI.ViewModels;
 namespace webapi.Controllers
 {
     [Route ("api/User")]
+    [Authorize(Roles = "Admin")]
     public class UserController:Controller
     {
         private readonly Context _dbContext;
@@ -18,15 +20,15 @@ namespace webapi.Controllers
             _dbContext = db;
         }
 
-        [HttpGet]
+        [HttpGet("{QueryStr}")]
         public IActionResult Get (int Page, string QueryStr) {
             var list = this._dbContext.User.OrderByDescending (x => x.Id).Skip (10 * (Page - 1)).Take (10).AsQueryable ();
             if (!string.IsNullOrEmpty (QueryStr)) { list = list.Where (x => x.UserName.Contains (QueryStr)); }
-            var result = JsonConvert.SerializeObject (list);
+            var result = new {data=list,total=list.Count(),current=Page};
             return Ok (result);
         }
 
-        [HttpPut ("Update")]
+        [HttpPut ("{jsonStr}")]
         public IActionResult Put (string jsonStr) {
             try {
                 var args = JsonConvert.DeserializeObject<User> (jsonStr);
@@ -57,7 +59,7 @@ namespace webapi.Controllers
             }
         }
 
-        [HttpPost ("Add")]
+        [HttpPost ("{jsonStr}")]
         public IActionResult Post (string jsonStr) {
             try {
                 var args = JsonConvert.DeserializeObject<User> (jsonStr);
@@ -87,7 +89,7 @@ namespace webapi.Controllers
             }
         }
 
-        [HttpDelete ("Del")]
+        [HttpDelete ("{jsonStr}")]
         public IActionResult Delete (string jsonStr) {
             try {
                 var args = JsonConvert.DeserializeObject<User> (jsonStr);
