@@ -20,7 +20,7 @@ namespace webapi.Controllers {
             _dbContext = db;
         }
 
-        [HttpPost ("{username},{password}",Name = "Login")]
+        [HttpPost ("{username,password}",Name = "Login")]
         public IActionResult Login (string username, string password) {
             if (string.IsNullOrEmpty (username) || string.IsNullOrEmpty (password)) {
                 return BadRequest ("用户名或密码不能为空");
@@ -41,10 +41,10 @@ namespace webapi.Controllers {
                 CookieAuthenticationDefaults.AuthenticationScheme,
                 claimUser, new AuthenticationProperties () { IsPersistent = true, ExpiresUtc = DateTimeOffset.Now.AddMinutes (60) }).Wait ();
 
-            return Ok ();
+            return Ok (user);
         }
 
-        [HttpPost (Name = "SingOut")]
+        [HttpGet]
         public IActionResult SingOut () {
             HttpContext.SignOutAsync().Wait();
             return Ok ();

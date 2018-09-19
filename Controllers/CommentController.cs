@@ -19,6 +19,7 @@ namespace webapi.Controllers
             _dbContext = db;
         }
 
+
         [Authorize(Roles = "Admin")]
         [HttpDelete ("{jsonStr}")]
         public IActionResult Delete (string jsonStr) {

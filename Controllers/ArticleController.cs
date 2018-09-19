@@ -2,13 +2,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using webapi.Helper;
 using WebAPI.Models;
 using WebAPI.ViewModels;
-using webapi.Helper;
-using Microsoft.AspNetCore.Authorization;
 
 namespace WebAPI.Controllers {
     [Route ("api/Article")]
@@ -17,16 +17,16 @@ namespace WebAPI.Controllers {
         public ArticleController (Context db) {
             _dbContext = db;
         }
-        
-        [HttpGet("{QueryStr}")]
+
+        [HttpGet ("Get")]
         public IActionResult Get (string QueryStr, int Page = 1) {
             var list = this._dbContext.Article.OrderByDescending (x => x.CreateDate).Skip (10 * (Page - 1)).Take (10).AsQueryable ();
             if (!string.IsNullOrEmpty (QueryStr)) { list = list.Where (x => x.Title.Contains (QueryStr)); }
-            // var result = JsonConvert.SerializeObject (list);
-            return Ok (list);
+            var obj = new { data = list, total = list.Count (), current = Page };
+            return Ok (obj);
         }
 
-        [HttpGet ("{param}")]
+        [HttpGet ("Detail")]
         public IActionResult Detail (string param) {
             var id = Guid.Parse (param);
             var acticle = this._dbContext.User.Find (id);
@@ -36,7 +36,7 @@ namespace WebAPI.Controllers {
             return Ok (acticle);
         }
 
-        [Authorize(Roles = "Admin")]
+        [Authorize (Roles = "Admin")]
         [HttpPut ("{jsonStr}")]
         public IActionResult Put (string jsonStr) {
             try {
@@ -65,7 +65,7 @@ namespace WebAPI.Controllers {
 
         }
 
-        [Authorize(Roles = "Admin")]
+        [Authorize (Roles = "Admin")]
         [HttpPost ("{jsonStr}")]
         public IActionResult Post (string jsonStr) {
             try {
@@ -74,8 +74,8 @@ namespace WebAPI.Controllers {
                 var category = this._dbContext.Category.Find (categoryId);
                 var usr = new User ();
                 if (HttpContext.User.Identity.IsAuthenticated) {
-                    var uidStr = HttpContext.User.Claims.First().Value;
-                    var usrId = Guid.Parse(uidStr);
+                    var uidStr = HttpContext.User.Claims.First ().Value;
+                    var usrId = Guid.Parse (uidStr);
                     usr = this._dbContext.User.Find (usrId);
                 } else {
                     return NotFound ();
@@ -99,8 +99,8 @@ namespace WebAPI.Controllers {
                 return StatusCode (500);
             }
         }
-        
-        [Authorize(Roles = "Admin")]
+
+        [Authorize (Roles = "Admin")]
         [HttpDelete ("{param}")]
         public IActionResult Delete (string param) {
             try {

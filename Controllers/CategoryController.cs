@@ -22,7 +22,7 @@ namespace webapi.Controllers
         public IActionResult Get (int Page, string QueryStr) {
             var list = this._dbContext.Category.OrderByDescending (x => x.Sort).Skip (10 * (Page - 1)).Take (10).AsQueryable ();
             if (!string.IsNullOrEmpty (QueryStr)) { list = list.Where (x => x.Name.Contains (QueryStr)); }
-            var result = JsonConvert.SerializeObject (list);
+            var result = new {data=list,total=list.Count(),current=Page};
             return Ok (result);
         }
 

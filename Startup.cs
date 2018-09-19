@@ -25,6 +25,10 @@ namespace WebAPI {
 
             services.AddDbContext<Context> (options => options.UseSqlServer (Configuration.GetConnectionString ("Database")));
             services.AddSession ();
+            services.AddCors (options =>
+                options.AddPolicy ("AllowHeaders",
+                    p => p.AllowAnyOrigin ().AllowAnyHeader ().AllowAnyMethod ().AllowCredentials ())
+            );
             services.AddMvc ();
             services.AddAuthentication (CookieAuthenticationDefaults.AuthenticationScheme).AddCookie ();
         }
@@ -35,16 +39,17 @@ namespace WebAPI {
                 app.UseDeveloperExceptionPage ();
             } else {
                 app.UseExceptionHandler ("/error");
-                
+
             }
             app.UseSession ();
             app.UseStatusCodePages ("text/plain", "Status code page, status code: {0}");
             app.UseAuthentication ();
+            app.UseCors ("AllowHeaders");
             app.UseMvc (routes => {
-                routes.MapRoute(
-                    name:"default",
-                    template:"{controller}/{action}/{id?}",
-                    defaults: new { controller = "Home", action = "Error" }
+                routes.MapRoute (
+                    name: "default",
+                    template: "{controller}/{action}/{id?}",
+                    defaults : new { controller = "Home", action = "Error" }
                 );
             });
         }
