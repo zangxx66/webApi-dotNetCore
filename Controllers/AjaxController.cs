@@ -10,7 +10,6 @@ using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using webapi.Helper;
 using WebAPI.Models;
-using WebAPI.ViewModels;
 
 namespace webapi.Controllers {
     [Route ("api/Ajax")]

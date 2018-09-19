@@ -8,7 +8,7 @@ namespace WebAPI.Models {
         public string Summary { get; set; }
         public string Context { get; set; }
         public User Anthor { get; set; }
-        public Category Category { get; set; }
+        public string Category { get; set; }
         public ICollection<Comment> Comment { get; set; }
         public DateTime CreateDate { get; set; }
 

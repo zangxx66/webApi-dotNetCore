@@ -33,20 +33,5 @@ namespace WebAPI.Migrations {
             db.User.Add (user);
             db.SaveChanges ();
         }
-
-        public static void AddCategory (Context db) {
-            db.Database.EnsureCreated ();
-            var categoryItem = new Category[] {
-                new Category { Name = "c#", Sort = 0 },
-                new Category { Name = "vuejs", Sort = 1 },
-                new Category { Name = ".net", Sort = 2 },
-                new Category { Name = "cpp", Sort = 3 },
-                new Category { Name = "游戏开发", Sort = 4 }
-            };
-            foreach (var item in categoryItem) {
-                db.Category.Add (item);
-            }
-            db.SaveChanges ();
-        }
     }
 }

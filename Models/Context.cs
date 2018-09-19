@@ -8,7 +8,6 @@ namespace WebAPI.Models {
         public DbSet<User> User { get; set; }
         public DbSet<Article> Article { get; set; }
         public DbSet<Comment> Comment { get; set; }
-        public DbSet<Category> Category { get; set; }
         public DbSet<Logs> Logs { get; set; }
     }
 }

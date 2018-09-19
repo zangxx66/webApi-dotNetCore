@@ -24,9 +24,6 @@ namespace WebAPI {
                     if (!context.User.Any ()) {
                         Seed.AddUsr (context);
                     }
-                    if (!context.Category.Any ()) {
-                        Seed.AddCategory (context);
-                    }
 
                 } catch (Exception ex) {
                     var logger = services.GetRequiredService<ILogger<Program>> ();

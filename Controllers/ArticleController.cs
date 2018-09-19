@@ -8,7 +8,6 @@ using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using webapi.Helper;
 using WebAPI.Models;
-using WebAPI.ViewModels;
 
 namespace WebAPI.Controllers {
     [Route ("api/Article")]
@@ -40,17 +39,15 @@ namespace WebAPI.Controllers {
         [HttpPut ("{jsonStr}")]
         public IActionResult Put (string jsonStr) {
             try {
-                var args = JsonConvert.DeserializeObject<ArticleVM> (jsonStr);
-                var id = Guid.Parse (args.Id);
+                var args = JsonConvert.DeserializeObject<Article> (jsonStr);
+                var id = args.Id;
                 var article = this._dbContext.Article.Find (id);
                 if (article == null) {
                     return NotFound ();
                 }
-                var categoryId = Guid.Parse (args.Category);
-                var category = this._dbContext.Category.Find (categoryId);
                 article.Title = args.Title;
                 article.Context = args.Context;
-                article.Category = category;
+                article.Category = args.Category;
                 this._dbContext.Entry (article).CurrentValues.SetValues (article);
                 this._dbContext.SaveChanges ();
                 return NoContent ();
@@ -69,9 +66,7 @@ namespace WebAPI.Controllers {
         [HttpPost ("{jsonStr}")]
         public IActionResult Post (string jsonStr) {
             try {
-                var args = JsonConvert.DeserializeObject<ArticleVM> (jsonStr);
-                var categoryId = Guid.Parse (args.Category);
-                var category = this._dbContext.Category.Find (categoryId);
+                var args = JsonConvert.DeserializeObject<Article> (jsonStr);
                 var usr = new User ();
                 if (HttpContext.User.Identity.IsAuthenticated) {
                     var uidStr = HttpContext.User.Claims.First ().Value;
@@ -85,7 +80,7 @@ namespace WebAPI.Controllers {
                 article.Context = args.Context;
                 article.Summary = args.Context.Substring (0, 100);
                 article.CreateDate = DateTime.Now;
-                article.Category = category;
+                article.Category = args.Category;
                 article.Anthor = usr;
                 this._dbContext.Article.Add (article);
                 this._dbContext.SaveChanges ();

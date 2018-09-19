@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using WebAPI.Models;
-using WebAPI.ViewModels;
 
 namespace webapi.Controllers
 {
