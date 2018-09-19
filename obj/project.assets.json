@@ -13568,11 +13568,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "f:\\private\\webapi\\WebAPI.csproj",
+      "projectUniqueName": "E:\\OneSite\\BlogWebAPI\\WebAPI\\WebAPI.csproj",
       "projectName": "WebAPI",
-      "projectPath": "f:\\private\\webapi\\WebAPI.csproj",
+      "projectPath": "E:\\OneSite\\BlogWebAPI\\WebAPI\\WebAPI.csproj",
       "packagesPath": "C:\\Users\\zxx\\.nuget\\packages\\",
-      "outputPath": "f:\\private\\webapi\\obj\\",
+      "outputPath": "E:\\OneSite\\BlogWebAPI\\WebAPI\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
@@ -13629,5 +13629,13 @@
         "warn": true
       }
     }
-  }
+  },
+  "logs": [
+    {
+      "code": "Undefined",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "读取缓存文件 E:\\OneSite\\BlogWebAPI\\WebAPI\\obj\\WebAPI.csproj.nuget.cache 时遇到问题: Invalid property identifier character: <. Path 'version', line 3, position 0."
+    }
+  ]
 }
