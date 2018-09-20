@@ -35,7 +35,6 @@ namespace WebAPI.Controllers {
             return Ok (acticle);
         }
 
-        [Authorize (Roles = "Admin")]
         [HttpPut ("{jsonStr}")]
         public IActionResult Put (string jsonStr) {
             try {
@@ -62,15 +61,14 @@ namespace WebAPI.Controllers {
 
         }
 
-        [Authorize (Roles = "Admin")]
         [HttpPost ("{jsonStr}")]
         public IActionResult Post (string jsonStr) {
             try {
                 var args = JsonConvert.DeserializeObject<Article> (jsonStr);
                 var usr = new User ();
-                if (HttpContext.User.Identity.IsAuthenticated) {
-                    var uidStr = HttpContext.User.Claims.First ().Value;
-                    var usrId = Guid.Parse (uidStr);
+                var session = HttpContext.Session.GetString("userInfo");
+                if (session != null) {
+                    var usrId = Guid.Parse (session);
                     usr = this._dbContext.User.Find (usrId);
                 } else {
                     return NotFound ();
@@ -95,7 +93,6 @@ namespace WebAPI.Controllers {
             }
         }
 
-        [Authorize (Roles = "Admin")]
         [HttpDelete ("{param}")]
         public IActionResult Delete (string param) {
             try {

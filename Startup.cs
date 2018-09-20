@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -24,7 +25,10 @@ namespace WebAPI {
         public void ConfigureServices (IServiceCollection services) {
 
             services.AddDbContext<Context> (options => options.UseSqlServer (Configuration.GetConnectionString ("Database")));
-            services.AddSession ();
+            services.AddDistributedMemoryCache();
+            services.AddSession (options => {
+                options.IdleTimeout = TimeSpan.FromMinutes(60);
+            });
             services.AddCors (options =>
                 options.AddPolicy ("AllowHeaders",
                     p => p.AllowAnyOrigin ().AllowAnyHeader ().AllowAnyMethod ().AllowCredentials ())
@@ -41,6 +45,8 @@ namespace WebAPI {
                 app.UseExceptionHandler ("/error");
 
             }
+            
+            app.UseCookiePolicy();
             app.UseSession ();
             app.UseStatusCodePages ("text/plain", "Status code page, status code: {0}");
             app.UseAuthentication ();
@@ -49,7 +55,7 @@ namespace WebAPI {
                 routes.MapRoute (
                     name: "default",
                     template: "{controller}/{action}/{id?}",
-                    defaults : new { controller = "Home", action = "Error" }
+                    defaults : new { controller = "Home", action = "Index" }
                 );
             });
         }

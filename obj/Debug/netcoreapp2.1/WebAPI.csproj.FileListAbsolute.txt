@@ -26,3 +26,17 @@ E:\OneSite\BlogWebAPI\WebAPI\obj\Debug\netcoreapp2.1\WebAPI.AssemblyInfo.cs
 E:\OneSite\BlogWebAPI\WebAPI\obj\Debug\netcoreapp2.1\WebAPI.RazorTargetAssemblyInfo.cache
 E:\OneSite\BlogWebAPI\WebAPI\obj\Debug\netcoreapp2.1\WebAPI.dll
 E:\OneSite\BlogWebAPI\WebAPI\obj\Debug\netcoreapp2.1\WebAPI.pdb
+f:\private\webapi\webApi-dotNetCore\bin\Debug\netcoreapp2.1\WebAPI.deps.json
+f:\private\webapi\webApi-dotNetCore\bin\Debug\netcoreapp2.1\WebAPI.runtimeconfig.json
+f:\private\webapi\webApi-dotNetCore\bin\Debug\netcoreapp2.1\WebAPI.runtimeconfig.dev.json
+f:\private\webapi\webApi-dotNetCore\bin\Debug\netcoreapp2.1\WebAPI.dll
+f:\private\webapi\webApi-dotNetCore\bin\Debug\netcoreapp2.1\WebAPI.pdb
+f:\private\webapi\webApi-dotNetCore\obj\Debug\netcoreapp2.1\WebAPI.csprojAssemblyReference.cache
+f:\private\webapi\webApi-dotNetCore\obj\Debug\netcoreapp2.1\WebAPI.csproj.CoreCompileInputs.cache
+f:\private\webapi\webApi-dotNetCore\obj\Debug\netcoreapp2.1\WebAPI.RazorAssemblyInfo.cache
+f:\private\webapi\webApi-dotNetCore\obj\Debug\netcoreapp2.1\WebAPI.RazorAssemblyInfo.cs
+f:\private\webapi\webApi-dotNetCore\obj\Debug\netcoreapp2.1\WebAPI.AssemblyInfoInputs.cache
+f:\private\webapi\webApi-dotNetCore\obj\Debug\netcoreapp2.1\WebAPI.AssemblyInfo.cs
+f:\private\webapi\webApi-dotNetCore\obj\Debug\netcoreapp2.1\WebAPI.RazorTargetAssemblyInfo.cache
+f:\private\webapi\webApi-dotNetCore\obj\Debug\netcoreapp2.1\WebAPI.dll
+f:\private\webapi\webApi-dotNetCore\obj\Debug\netcoreapp2.1\WebAPI.pdb

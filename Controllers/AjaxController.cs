@@ -30,22 +30,24 @@ namespace webapi.Controllers {
                 return NotFound ("用户不存在");
             }
 
-            var claims = new [] {
-                new Claim ("Id", user.Id.ToString ()),
-                new Claim("Role",user.Role.ToString())
-            };
-            var claimsIdentity = new ClaimsIdentity (claims, CookieAuthenticationDefaults.AuthenticationScheme);
-            ClaimsPrincipal claimUser = new ClaimsPrincipal (claimsIdentity);
-            HttpContext.SignInAsync (
-                CookieAuthenticationDefaults.AuthenticationScheme,
-                claimUser, new AuthenticationProperties () { IsPersistent = true, ExpiresUtc = DateTimeOffset.Now.AddMinutes (60) }).Wait ();
+            // var claims = new [] {
+            //     new Claim ("Id", user.Id.ToString ()),
+            //     new Claim("Role",user.Role.ToString())
+            // };
+            // var claimsIdentity = new ClaimsIdentity (claims, CookieAuthenticationDefaults.AuthenticationScheme);
+            // ClaimsPrincipal claimUser = new ClaimsPrincipal (claimsIdentity);
+            // HttpContext.SignInAsync (
+            //     CookieAuthenticationDefaults.AuthenticationScheme,
+            //     claimUser, new AuthenticationProperties () { IsPersistent = true, ExpiresUtc = DateTimeOffset.Now.AddMinutes (60) }).Wait ();
+
+            HttpContext.Session.SetString("userInfo",user.Id.ToString());
 
             return Ok (user);
         }
 
         [HttpGet]
         public IActionResult SingOut () {
-            HttpContext.SignOutAsync().Wait();
+            HttpContext.Session.Remove("userInfo");
             return Ok ();
         }
     }
