@@ -61,14 +61,13 @@ namespace WebAPI.Controllers {
 
         }
 
-        [HttpPost ("{jsonStr}")]
-        public IActionResult Post (string jsonStr) {
+        [HttpPost ("{jsonStr,id}")]
+        public IActionResult Post (string jsonStr,string id) {
             try {
                 var args = JsonConvert.DeserializeObject<Article> (jsonStr);
                 var usr = new User ();
-                var session = HttpContext.Session.GetString("userInfo");
-                if (session != null) {
-                    var usrId = Guid.Parse (session);
+                if (!string.IsNullOrEmpty(id)) {
+                    var usrId = Guid.Parse (id);
                     usr = this._dbContext.User.Find (usrId);
                 } else {
                     return NotFound ();
@@ -76,7 +75,7 @@ namespace WebAPI.Controllers {
                 var article = new Article ();
                 article.Title = args.Title;
                 article.Context = args.Context;
-                article.Summary = args.Context.Substring (0, 100);
+                article.Summary = args.Summary;
                 article.CreateDate = DateTime.Now;
                 article.Category = args.Category;
                 article.Anthor = usr;
