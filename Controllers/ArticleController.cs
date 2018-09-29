@@ -26,9 +26,9 @@ namespace WebAPI.Controllers {
         }
 
         [HttpGet ("Detail")]
-        public IActionResult Detail (string param) {
-            var id = Guid.Parse (param);
-            var acticle = this._dbContext.User.Find (id);
+        public IActionResult Detail (string artid) {
+            var id = Guid.Parse (artid);
+            var acticle = this._dbContext.Article.Find (id);
             if (acticle == null) {
                 return NotFound ();
             }
@@ -45,6 +45,7 @@ namespace WebAPI.Controllers {
                     return NotFound ();
                 }
                 article.Title = args.Title;
+                article.Summary = args.Summary;
                 article.Context = args.Context;
                 article.Category = args.Category;
                 this._dbContext.Entry (article).CurrentValues.SetValues (article);
