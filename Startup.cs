@@ -35,6 +35,18 @@ namespace WebAPI {
             );
             services.AddMvc ();
             services.AddAuthentication (CookieAuthenticationDefaults.AuthenticationScheme).AddCookie ();
+            services.AddHsts(options=>{
+                options.Preload = true;
+                options.IncludeSubDomains = true;
+                options.MaxAge = TimeSpan.FromDays(60);
+                options.ExcludedHosts.Add("admin.satania.app");
+                options.ExcludedHosts.Add("www.satania.app");
+            });
+
+            services.AddHttpsRedirection(options=>{
+                options.RedirectStatusCode = StatusCodes.Status307TemporaryRedirect;
+                options.HttpsPort = 5001;
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -43,9 +55,10 @@ namespace WebAPI {
                 app.UseDeveloperExceptionPage ();
             } else {
                 app.UseExceptionHandler ("/error");
-
+                app.UseHsts();
             }
             
+            app.UseHttpsRedirection();
             app.UseCookiePolicy();
             app.UseSession ();
             app.UseStatusCodePages ("text/plain", "Status code page, status code: {0}");
