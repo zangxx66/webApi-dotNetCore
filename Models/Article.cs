@@ -9,11 +9,12 @@ namespace WebAPI.Models {
         public string Context { get; set; }
         public User Anthor { get; set; }
         public string Category { get; set; }
+        public bool Enable { get; set; }
         public ICollection<Comment> Comment { get; set; }
         public DateTime CreateDate { get; set; }
 
-        public Article(){
-            this.Id = Guid.NewGuid();
+        public Article () {
+            this.Id = Guid.NewGuid ();
         }
     }
 }

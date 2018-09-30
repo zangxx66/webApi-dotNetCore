@@ -6,11 +6,11 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using WebAPI.Models;
 
 namespace WebAPI {
@@ -25,9 +25,9 @@ namespace WebAPI {
         public void ConfigureServices (IServiceCollection services) {
 
             services.AddDbContext<Context> (options => options.UseSqlServer (Configuration.GetConnectionString ("Database")));
-            services.AddDistributedMemoryCache();
+            services.AddDistributedMemoryCache ();
             services.AddSession (options => {
-                options.IdleTimeout = TimeSpan.FromMinutes(60);
+                options.IdleTimeout = TimeSpan.FromMinutes (60);
             });
             services.AddCors (options =>
                 options.AddPolicy ("AllowHeaders",
@@ -35,18 +35,18 @@ namespace WebAPI {
             );
             services.AddMvc ();
             services.AddAuthentication (CookieAuthenticationDefaults.AuthenticationScheme).AddCookie ();
-            services.AddHsts(options=>{
-                options.Preload = true;
-                options.IncludeSubDomains = true;
-                options.MaxAge = TimeSpan.FromDays(60);
-                options.ExcludedHosts.Add("admin.satania.app");
-                options.ExcludedHosts.Add("www.satania.app");
-            });
+            // services.AddHsts(options=>{
+            //     options.Preload = true;
+            //     options.IncludeSubDomains = true;
+            //     options.MaxAge = TimeSpan.FromDays(60);
+            //     options.ExcludedHosts.Add("admin.satania.app");
+            //     options.ExcludedHosts.Add("www.satania.app");
+            // });
 
-            services.AddHttpsRedirection(options=>{
-                options.RedirectStatusCode = StatusCodes.Status307TemporaryRedirect;
-                options.HttpsPort = 5001;
-            });
+            // services.AddHttpsRedirection(options=>{
+            //     options.RedirectStatusCode = StatusCodes.Status307TemporaryRedirect;
+            //     options.HttpsPort = 5001;
+            // });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -55,11 +55,11 @@ namespace WebAPI {
                 app.UseDeveloperExceptionPage ();
             } else {
                 app.UseExceptionHandler ("/error");
-                app.UseHsts();
+                app.UseHsts ();
             }
-            
-            app.UseHttpsRedirection();
-            app.UseCookiePolicy();
+
+            // app.UseHttpsRedirection();
+            app.UseCookiePolicy ();
             app.UseSession ();
             app.UseStatusCodePages ("text/plain", "Status code page, status code: {0}");
             app.UseAuthentication ();
