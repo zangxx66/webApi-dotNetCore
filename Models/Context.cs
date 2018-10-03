@@ -9,5 +9,6 @@ namespace WebAPI.Models {
         public DbSet<Article> Article { get; set; }
         public DbSet<Comment> Comment { get; set; }
         public DbSet<Logs> Logs { get; set; }
+        public DbSet<TimeLine> TimeLines {get;set;}
     }
 }

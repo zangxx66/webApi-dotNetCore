@@ -50,6 +50,7 @@ namespace WebAPI.Controllers {
                 article.Summary = args.Summary;
                 article.Context = args.Context;
                 article.Category = args.Category;
+                article.Enable = args.Enable;
                 this._dbContext.Entry (article).CurrentValues.SetValues (article);
                 this._dbContext.SaveChanges ();
                 return NoContent ();
@@ -81,6 +82,7 @@ namespace WebAPI.Controllers {
                 article.Summary = args.Summary;
                 article.CreateDate = DateTime.Now;
                 article.Category = args.Category;
+                article.Enable = args.Enable;
                 article.Anthor = usr;
                 this._dbContext.Article.Add (article);
                 this._dbContext.SaveChanges ();
