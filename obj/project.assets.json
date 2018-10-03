@@ -13580,11 +13580,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "e:\\OneSite\\BlogWebAPI\\webApi-dotNetCore\\WebAPI.csproj",
+      "projectUniqueName": "E:\\OneSite\\BlogWebAPI\\webApi-dotNetCore\\WebAPI.csproj",
       "projectName": "WebAPI",
-      "projectPath": "e:\\OneSite\\BlogWebAPI\\webApi-dotNetCore\\WebAPI.csproj",
+      "projectPath": "E:\\OneSite\\BlogWebAPI\\webApi-dotNetCore\\WebAPI.csproj",
       "packagesPath": "C:\\Users\\zxx\\.nuget\\packages\\",
-      "outputPath": "e:\\OneSite\\BlogWebAPI\\webApi-dotNetCore\\obj\\",
+      "outputPath": "E:\\OneSite\\BlogWebAPI\\webApi-dotNetCore\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"

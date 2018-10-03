@@ -18,8 +18,10 @@ namespace WebAPI.Controllers {
         }
 
         [HttpGet ("Get")]
-        public IActionResult Get (string QueryStr, int Page = 1) {
+        public IActionResult Get (string QueryStr, int Page = 1, int Token = 1) {
+            var isQueryAll = Token != 2550505 ? false : true;
             var list = this._dbContext.Article.OrderByDescending (x => x.CreateDate).Skip (10 * (Page - 1)).Take (10).AsQueryable ();
+            if (!isQueryAll) { list = list.Where (x => x.Enable); }
             if (!string.IsNullOrEmpty (QueryStr)) { list = list.Where (x => x.Title.Contains (QueryStr)); }
             var obj = new { data = list, total = list.Count (), current = Page };
             return Ok (obj);
@@ -63,11 +65,11 @@ namespace WebAPI.Controllers {
         }
 
         [HttpPost ("{jsonStr,id}")]
-        public IActionResult Post (string jsonStr,string id) {
+        public IActionResult Post (string jsonStr, string id) {
             try {
                 var args = JsonConvert.DeserializeObject<Article> (jsonStr);
                 var usr = new User ();
-                if (!string.IsNullOrEmpty(id)) {
+                if (!string.IsNullOrEmpty (id)) {
                     var usrId = Guid.Parse (id);
                     usr = this._dbContext.User.Find (usrId);
                 } else {

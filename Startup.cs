@@ -6,11 +6,11 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using WebAPI.Models;
 
 namespace WebAPI {
@@ -25,9 +25,9 @@ namespace WebAPI {
         public void ConfigureServices (IServiceCollection services) {
 
             services.AddDbContext<Context> (options => options.UseSqlServer (Configuration.GetConnectionString ("Database")));
-            services.AddDistributedMemoryCache();
+            services.AddDistributedMemoryCache ();
             services.AddSession (options => {
-                options.IdleTimeout = TimeSpan.FromMinutes(60);
+                options.IdleTimeout = TimeSpan.FromMinutes (60);
             });
             services.AddCors (options =>
                 options.AddPolicy ("AllowHeaders",
@@ -55,11 +55,11 @@ namespace WebAPI {
                 app.UseDeveloperExceptionPage ();
             } else {
                 app.UseExceptionHandler ("/error");
-                app.UseHsts();
+                app.UseHsts ();
             }
-            
+
             app.UseHttpsRedirection();
-            app.UseCookiePolicy();
+            app.UseCookiePolicy ();
             app.UseSession ();
             app.UseStatusCodePages ("text/plain", "Status code page, status code: {0}");
             app.UseAuthentication ();
