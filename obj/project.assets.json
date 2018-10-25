@@ -8825,10 +8825,11 @@
       ]
     },
     "StackExchange.Redis.StrongName/1.2.6": {
-      "sha512": "UFmT1/JYu1PLiRwkyvEPVHk/tVTJa8Ka2rb9yzidzDoQARvhBVRpaWUeaP81373v54jupDBvAoGHGl0EY/HphQ==",
+      "sha512": "gIXD2xaDra46atvl1pR199FWFqAWa61hVDURrRfv2/QnxXSOpQbAVXWtSQkRQTT4Pqit6v+3OSnyHSd+RfA4Gg==",
       "type": "package",
       "path": "stackexchange.redis.strongname/1.2.6",
       "files": [
+        ".signature.p7s",
         "lib/net45/StackExchange.Redis.StrongName.dll",
         "lib/net45/StackExchange.Redis.StrongName.xml",
         "lib/net46/StackExchange.Redis.StrongName.dll",
@@ -13580,11 +13581,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "E:\\OneSite\\BlogWebAPI\\webApi-dotNetCore\\WebAPI.csproj",
+      "projectUniqueName": "F:\\private\\webapi\\webApi-dotNetCore\\WebAPI.csproj",
       "projectName": "WebAPI",
-      "projectPath": "E:\\OneSite\\BlogWebAPI\\webApi-dotNetCore\\WebAPI.csproj",
+      "projectPath": "F:\\private\\webapi\\webApi-dotNetCore\\WebAPI.csproj",
       "packagesPath": "C:\\Users\\zxx\\.nuget\\packages\\",
-      "outputPath": "E:\\OneSite\\BlogWebAPI\\webApi-dotNetCore\\obj\\",
+      "outputPath": "F:\\private\\webapi\\webApi-dotNetCore\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"

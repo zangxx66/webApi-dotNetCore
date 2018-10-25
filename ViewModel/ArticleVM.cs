@@ -10,7 +10,7 @@ namespace webApi_dotNetCore.ViewModel
         public Guid Id { get; set; }
         public string Title { get; set; }
         public string Summary { get; set; }
-        public bool Enable { get; set; }
+        public bool Show { get; set; }
 
         public List<ArticleVM> ArticleList(IQueryable<Article> list){
             var result = new List<ArticleVM>();
@@ -19,7 +19,7 @@ namespace webApi_dotNetCore.ViewModel
                 args.Id = item.Id;
                 args.Title = item.Title;
                 args.Summary = item.Summary;
-                args.Enable = item.Enable;
+                args.Show = item.Show;
                 result.Add(args);
             }
             return result;
