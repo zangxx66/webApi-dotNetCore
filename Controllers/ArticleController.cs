@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using webapi.Helper;
 using WebAPI.Models;
+using webApi_dotNetCore.ViewModel;
 
 namespace WebAPI.Controllers {
     [Route ("api/Article")]
@@ -23,7 +24,8 @@ namespace WebAPI.Controllers {
             var list = this._dbContext.Article.OrderByDescending (x => x.CreateDate).Skip (10 * (Page - 1)).Take (10).AsQueryable ();
             if (!isQueryAll) { list = list.Where (x => x.Enable); }
             if (!string.IsNullOrEmpty (QueryStr)) { list = list.Where (x => x.Title.Contains (QueryStr)); }
-            var obj = new { data = list, total = list.Count (), current = Page };
+            var result = new ArticleVM().ArticleList(list);
+            var obj = new { data = result, total = list.Count (), current = Page };
             return Ok (obj);
         }
 
