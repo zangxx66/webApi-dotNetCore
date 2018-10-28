@@ -1,12 +1,14 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using webapi.Helper;
+using webApi_dotNetCore;
 using WebAPI.Models;
 using webApi_dotNetCore.ViewModel;
 
@@ -20,13 +22,22 @@ namespace WebAPI.Controllers {
 
         [HttpGet ("Get")]
         public IActionResult Get (string QueryStr, int Page = 1, int Token = 1) {
-            var isQueryAll = Token != 2550505 ? false : true;
-            var list = this._dbContext.Article.OrderByDescending (x => x.CreateDate).Skip (10 * (Page - 1)).Take (10).AsQueryable ();
-            if (!isQueryAll) { list = list.Where (x => x.Enable); }
-            if (!string.IsNullOrEmpty (QueryStr)) { list = list.Where (x => x.Title.Contains (QueryStr)); }
-            var result = new ArticleVM().ArticleList(list);
-            var obj = new { data = result, total = list.Count (), current = Page };
-            return Ok (obj);
+            // var isQueryAll = Token != 2550505 ? "where Show=1" : "";
+            // var SQLHelper = new SQLHelper(this._dbContext);
+            // var list = SQLHelper.QueryArticlePagination("Id,Title,Summary,CreateDate","Article","order by CreateDate desc",isQueryAll,Page,10);
+  
+            var list = this._dbContext.Article.OrderByDescending (x => x.CreateDate).Skip (10 * (Page - 1)).Take (10).Select(p=>new ArticleVM(){
+                Id = p.Id,
+                Title = p.Title,
+                Summary = p.Summary,
+                CreateDate = p.CreateDate,
+                Show = p.Show
+            }).AsQueryable();
+            if(Token != 2550505){
+                list = list.Where(p=>p.Show);
+            }
+            var result = new { data = list, total = list.Count(), current = Page };
+            return Ok (result);
         }
 
         [HttpGet ("Detail")]
@@ -52,7 +63,7 @@ namespace WebAPI.Controllers {
                 article.Summary = args.Summary;
                 article.Context = args.Context;
                 article.Category = args.Category;
-                article.Enable = args.Enable;
+                article.Show = args.Show;
                 this._dbContext.Entry (article).CurrentValues.SetValues (article);
                 this._dbContext.SaveChanges ();
                 return NoContent ();
@@ -84,7 +95,7 @@ namespace WebAPI.Controllers {
                 article.Summary = args.Summary;
                 article.CreateDate = DateTime.Now;
                 article.Category = args.Category;
-                article.Enable = args.Enable;
+                article.Show = args.Show;
                 article.Anthor = usr;
                 this._dbContext.Article.Add (article);
                 this._dbContext.SaveChanges ();
